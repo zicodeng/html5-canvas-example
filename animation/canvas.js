@@ -124,7 +124,7 @@ function init() {
     }
 }
 
-// This function animates balls bouncing off the wall.
+// This function animates balls.
 function animateBalls() {
     window.requestAnimationFrame(animateBalls);
     
