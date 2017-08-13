@@ -12,12 +12,12 @@ var gravity = 1;
 var friction = 0.9;
 
 // This function creates a new ball object.
-function Ball(x, y, r, dx, dy, color) {
+function Ball(x, y, r, vx, vy, color) {
     this.x = x;
     this.y = y;
     this.r = r;
-    this.dx = dx;
-    this.dy = dy;
+    this.vx = vx;
+    this.vy = vy;
     this.color = color;
 
     // This function draws a ball on canvas.
@@ -37,15 +37,15 @@ function Ball(x, y, r, dx, dy, color) {
             // when it hits the wall.
             // This is because the friction is applied, thus velocity is decreased slightly
             // every time the ball hits the wall.
-            this.dy = -this.dy * friction;
+            this.vy = -this.vy * friction;
         } else {
             // If the ball is moving on the air,
             // increase its y velocity by adding gravity to it.
-            this.dy += gravity;
+            this.vy += gravity;
         }
 
         // Update position.
-        this.y += this.dy;  
+        this.y += this.vy;  
 
         // Re-draw the ball with updated parameters.
         this.draw();

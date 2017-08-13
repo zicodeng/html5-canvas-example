@@ -24,17 +24,17 @@ window.addEventListener("mousemove", function(event) {
 
 var maxRadius = 50;
 var minRadius = 5;
-var distance = 150; // Distance between user's mouse and center of the ball.
+var distance = 150; // Horizontal or vertical distance between user's mouse and center of the ball.
 var sizeIncreaseSpeed = 4; // How fast the ball's size should increase when within the distance.
 var sizeDecreaseSpeed = 2; // How fast the ball's size should decrease when out of the distance.
 
 // This function creates a new ball object.
-function Ball(x, y, r, dx, dy, color) {
+function Ball(x, y, r, vx, vy, color) {
     this.x = x;
     this.y = y;
     this.r = r;
-    this.dx = dx;
-    this.dy = dy;
+    this.vx = vx;
+    this.vy = vy;
     this.color = color;
 
     // This function draws a ball on canvas.
@@ -49,21 +49,21 @@ function Ball(x, y, r, dx, dy, color) {
     this.updatePosition = function() {
         // If the ball hits the wall, reverse its velocity.
         if(this.x + this.r > window.innerWidth || this.x - this.r < 0) {
-            this.dx = -this.dx;
+            this.vx = -this.vx;
         }
 
         if(this.y + this.r > window.innerHeight || this.y - this.r < 0) {
-            this.dy = -this.dy;
+            this.vy = -this.vy;
         }
 
         // Update position.
-        this.x += this.dx;
-        this.y += this.dy;  
+        this.x += this.vx;
+        this.y += this.vy;  
 
         // Interact with user's mouse.
         if(Math.abs(mouse.x - this.x) < distance && Math.abs(mouse.y - this.y) < distance) {
-            // If the distance between user's mouse 
-            // and the ball's center is less than a certain distance,
+            // If the horizontal or vertical distance between user's mouse 
+            // and the ball's center is less than a certain amount,
             // and if the current ball's radius is less than max radius,
             // increase the ball's radius.
             if(this.r < maxRadius) {
@@ -107,15 +107,15 @@ function init() {
 
         // Velocity
         // Randomize velocity, including both positive and negative.
-        var dx = (Math.random() - 0.5) * 10; // Horizontal velocity.
-        var dy = (Math.random() - 0.5) * 10; // Vertical velocity.
+        var vx = (Math.random() - 0.5) * 10; // Horizontal velocity.
+        var vy = (Math.random() - 0.5) * 10; // Vertical velocity.
 
         // Color
         var colorIndex = Math.floor((Math.random() * colors.length)); // Random number 0 ~ (colors.length - 1).
         var color = colors[colorIndex];
 
         // Each individual ball has its own random starting point, size, and velocity.
-        var mBall = new Ball(x, y, r, dx, dy, color);
+        var mBall = new Ball(x, y, r, vx, vy, color);
 
         // Draw the ball we just created on canvas.
         mBall.draw();
