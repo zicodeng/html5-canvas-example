@@ -7,14 +7,44 @@ var ctx = canvas.getContext("2d");
 
 var mouse = {
     x: undefined,
-    y: undefined
+    y: undefined,
+
+    // These two variables represent how fast the user's mousing is moving.
+    // They will be used on big ball's vx and vy.
+    vx: 0,
+    vy: 0
 }
 
-window.addEventListener("mousemove", function(e) {
-    mouse.x = event.x;
-    mouse.y = event.y;
+var timestamp = null;
+var lastMouseX = null;
+var lastMouseY = null;
 
-    console.log(e);
+window.addEventListener("mousemove", function(e) {
+    mouse.x = e.x;
+    mouse.y = e.y;
+
+    if (timestamp === null) {
+        timestamp = Date.now();
+        lastMouseX = e.x;
+        lastMouseY = e.y;
+        return;
+    }
+
+    var now = Date.now();
+    var dt =  now - timestamp;
+    var dx = e.x - lastMouseX; // Horizontal distance change within dt.
+    var dy = e.y - lastMouseY; // Vertical distance change within dt.
+
+    // Obtain instant velocity.
+    var vx = Math.round(dx / dt);
+    var vy = Math.round(dy / dt);
+
+    timestamp = now;
+    lastMouseX = e.x;
+    lastMouseY = e.y;
+
+    mouse.vx = vx;
+    mouse.vy = vy;
 });
 
 // This function creates a new ball object.
@@ -85,12 +115,17 @@ function collideBalls() {
     var distance = getDistance(smallBall.x, smallBall.y, bigBall.x, bigBall.y);
 
     // If the small ball collides with the big ball,
-    // change the big ball's color.
+    // give the mouse's current velocity to the big ball's velocity.
     if(distance < smallBall.r + bigBall.r) {
-        bigBall.color = "#000";
-    } else {
-        bigBall.color = "#3498DB";
+
+        // Make sure mouse is actually moving and has velocity.
+        if(mouse.vx !== 0 || mouse.vy !== 0) {
+            bigBall.vx = mouse.vx * 10;
+            bigBall.vy = mouse.vy * 10; 
+        }
     }
+
+    bigBall.updatePosition();
 }
 
 collideBalls();
