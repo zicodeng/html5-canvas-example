@@ -12,3 +12,6 @@ Collision: https://zicodeng.github.io/html5-canvas-example/collision/
 
 Greedy Snake:
 https://zicodeng.github.io/html5-canvas-example/greedy-snake/
+
+Heart Collecting Game:
+https://zicodeng.github.io/html5-canvas-example/heart-collecting-game/
